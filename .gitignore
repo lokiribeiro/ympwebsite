@@ -1,0 +1,7 @@
+node_modules
+
+.desktop-installer
+
+version.desktop
+
+.vscode

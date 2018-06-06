@@ -1,0 +1,55 @@
+<div class="register-container full-height sm-p-t-30" style="margin-top:60px !important;">
+    <div class="d-flex justify-content-center flex-column full-height ">
+        <img src="../assets/img/logo-white.png" alt="logo" data-src="../assets/img/logo-white.png" data-src-retina="../assets/img/logo-white.png"
+            width="78" height="22">
+        <p>
+            Log in using your YMP account
+        </p>
+        <form id="login" class="p-t-15" role="form">
+            <div class="row" ng-if="login.error">
+                <div class="col-sm-12 alert alert-danger" role="alert">
+                    <p>
+                    <button class="close" data-dismiss="alert"></button>
+                    {{loginerror}}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-group-default">
+                        <label>Username</label>
+                        <input type="text" ng-model="login.login.username" placeholder="YMP Username" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-group-default">
+                        <label>Password</label>
+                        <input type="password" ng-model="login.login.password" placeholder="YMP Password" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-cons m-t-10" type="submit" ng-click="login.signin()">Login</button>
+        </form>
+    </div>
+</div>
+<div class=" full-width" style="margin-top: 60px !important;">
+    <div class="register-container m-b-10 clearfix">
+        <div class="m-b-30 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix d-flex-md-up">
+            <!--<div class="col-md-2 no-padding d-flex align-items-center">
+          <img src="../assets/img/logo-white.png" alt="" class="" data-src="assets/img/demo/pages_icon.png" data-src-retina="assets/img/demo/pages_icon_2x.png">
+        </div>-->
+            <div class="col-md-12 no-padding d-flex align-items-center">
+                <div class="col-sm-12 copyright sm-text-center">
+                    <p class="small no-margin pull-left sm-pull-reset">
+                        <span class="hint-text">Copyright &copy; 2018 </span>
+                        <span class="font-montserrat">Powered by TYS Ltd.</span>
+                        <span class="hint-text">All rights reserved. </span>
+                    </p>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
