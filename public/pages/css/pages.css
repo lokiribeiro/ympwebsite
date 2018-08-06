@@ -6952,10 +6952,10 @@ body.rtl .checkbox label::after {
     padding-left: 7px;
   }
   form .row [class*='col-']:first-child {
-    padding-left: 0;
+    padding-left: 10;
   }
   form .row [class*='col-']:last-child {
-    padding-right: 0;
+    padding-right: 10;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
@@ -13936,7 +13936,7 @@ Main components
     left: -9999px;
   }
   .table-responsive-block tr {
-    border: 1px solid rgba(230, 230, 230, 0.7);
+    border: 0px solid rgba(230, 230, 230, 0.7);
     margin-bottom: 15px;
   }
   .table-responsive-block td {

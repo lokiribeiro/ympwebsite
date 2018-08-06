@@ -1,6 +1,7 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
+import ngFileUpload from 'ng-file-upload';
 
 import '../../../startup/accounts-config.js';
 
@@ -12,6 +13,11 @@ import Navigation from '../navigation/navigation';
 import Login from '../login/login';
 import Forums from '../forums/forums';
 import Topic from '../topic/topic';
+import Quotes from '../quotes/quotes';
+import Projectpage from '../projectpage/projectpage';
+import Projectdetails from '../projectdetails/projectdetails';
+import Quotepage from '../quotepage/quotepage';
+import Mypostings from '../mypostings/mypostings';
  
 class Socially {}
  
@@ -25,7 +31,13 @@ export default angular.module(name, [
   Login.name,
   Forums.name,
   Topic.name,
+  Quotes.name,
+  Projectpage.name,
+  Projectdetails.name,
+  Quotepage.name,
+  Mypostings.name,
   'accounts.ui',
+  ngFileUpload
 ]).component(name, {
   template,
   controllerAs: name,
@@ -58,13 +70,8 @@ function run($rootScope, $state, $stateParams) {
       $state.go('login', {}, {reload: 'login'});
     }
     if(error.detail == 'LOGGED_IN'){
-      $state.go('dashboard', {}, {reload: 'dashboard'});
-    } else {
-      console.log('nag else');
-      $state.go('login', {}, {reload: 'login'});
-    }
-
-
+      $state.go('forums', {}, {reload: 'forums'});
+    } 
   });
 }
 ]);

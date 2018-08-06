@@ -3,51 +3,19 @@ import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import utilsPagination from 'angular-utils-pagination';
 
-import '../../../startup/pages.js';
+//import '../../../startup/pages.js';
 
 import { Meteor } from 'meteor/meteor';
 
 import { Counts } from 'meteor/tmeasday:publish-counts';
 
-import { Posts } from '../../../api/posts';
-import { Comments } from '../../../api/comments';
-import { Unreadposts } from '../../../api/unreadposts';
+import { Projects } from '../../../api/projects';
+import { Profiles } from '../../../api/profiles';
 
-import template from './topic.html';
+import template from './mypostings.html';
 
-class Topic {
-    constructor($scope, $reactive, $stateParams, $state) {
-        angular.element(document).ready(function () {
-            var userID = Meteor.userId();
-            var selector = {
-                $and: [
-                    { userID: userID },
-                    { postID: $stateParams.topicId }
-                ]
-            };
-            var unreadposts = Unreadposts.findOne(selector);
-            if (unreadposts) {
-                var unread = false;
-                Meteor.call('upsertUnread', unreadposts._id, unread, function (err, detail) {
-                    if (err) {
-                        console.info('err', err);
-                    } else {
-                        console.info('success', detail);
-                    }
-                });
-            } else {
-                var unreadUpdate = {};
-                unreadUpdate.unread = false;
-                unreadUpdate.userID = userID;
-                unreadUpdate.postID = $stateParams.topicId;
-                var status = Unreadposts.insert(unreadUpdate);
-                console.info('insert unread', status);
-            }
-
-        });
-
-
-
+class Mypostings {
+    constructor($scope, $reactive, $state) {
         //'ngInject';
         var animationTimer;
 
@@ -214,48 +182,42 @@ class Topic {
         this.perPage = 10;
         this.page = 1;
         this.sort = {
-            date: 1
+            date: -1
         };
         this.searchText = '';
 
-        this.comment = {};
-        this.myComment = {};
-        $scope.latestComment = {};
+        this.post = {};
+        this.project = {};
         this.required = false;
+        this.myPostings = true;
+        this.clickMore = false;
+        this.clickMore2 = false;
 
         this.subscribe('users');
 
-        this.subscribe('individualpost');
+        this.subscribe('profiles');
 
-        this.subscribe('unreadposts');
-
-        this.subscribe('comments', () => [{
+        this.subscribe('myprojects', () => [{
             limit: parseInt(this.perPage),
             skip: parseInt((this.getReactively('page') - 1) * this.perPage),
             sort: this.getReactively('sort')
-        }, this.getReactively('searchText')
+        }, this.getReactively('searchText'),
+        $scope.getReactively('ownerID')
         ]);
 
         this.helpers({
-            forumposts() {
-                var selector = { _id: $stateParams.topicId };
-                var posts = Posts.findOne(selector);
-                console.info('posts', posts);
-                return posts;
-            },
-            comments() {
-                var selector = { postID: $stateParams.topicId };
-                var comments = Comments.find(selector, {
+            projectposts() {
+                $scope.ownerID = Meteor.userId();
+                var selector = {owner: $scope.ownerID};
+
+                var projects = Projects.find(selector, {
                     sort: this.getReactively('sort')
                 });
-                console.info('comments', comments);
-                return comments;
+                console.info('projects', projects);
+                return projects;
             },
             postsCount() {
-                return Counts.get('numberOfPosts');
-            },
-            commentsCount() {
-                return Counts.get('numberOfComments');
+                return Counts.get('numberOfMyProjects');
             },
             isLoggedIn() {
                 return !!Meteor.userId();
@@ -267,7 +229,6 @@ class Topic {
                 return Meteor.user();
             }
         });
-
 
         this.gotoForums = function () {
             $state.go('forums', {}, { reload: 'forums' });
@@ -288,157 +249,92 @@ class Topic {
             }, 2000);
         }
 
+        this.clickOtherPosts = function () {
+            this.myPostings = !this.myPostings;
+        }
+
+        this.thisHeight = function (post) {
+            var varName = "#checkHeight" + post._id;
+            console.info('varName', varName);
+            var result = $(varName).height();
+            console.info('result', result);
+            return result;
+        }
+
+        this.thisHeight2 = function (post) {
+            var varName = "#checkHeight2" + post._id;
+            var result = $(varName).height();
+            console.info('result', result);
+            return result;
+        }
+
         this.submit = function () {
-            console.info('submitted post', this.comment);
-            if (this.comment.reply) {
-                this.comment.postID = $stateParams.topicId;
-                this.comment.owner = Meteor.userId();
-                this.comment.date = new Date();
-                this.comment.dateTime = this.comment.date.getTime();
+            console.info('submitted post', this.project);
+            if (this.project.name && this.project.details) {
+                this.project.owner = Meteor.userId();
+                $scope.projectUserID = this.project.owner;
+                console.info('inventory', this.post);
+                this.project.date = new Date();
+                this.project.dateTime = this.project.date.getTime();
+                this.project.datePosted = new Date();
                 var users = Meteor.user();
                 console.info('users', users);
-                this.comment.name = users.username;
-                this.comment.jobtitle = users.jobtitle;
-                this.comment.profilePhoto = users.profilePhoto;
-                this.comment.status = true;
-                var status = Comments.insert(this.comment);
+                this.project.ownerName = users.username;
+                this.project.profilePhoto = users.profilePhoto;
+                this.project.boatName = users.boatName;
+                this.project.jobtitle = users.jobtitle;
+                this.project.status = true;
+                this.project.filecount = 0;
+                this.project.imagecount = 0;
+                this.project.videocount = 0;
+                this.project.jobcount = 0;
+                this.project.quotecount = 0;
+
+                var selector = { userID: this.project.owner };
+                var profiles = Profiles.find(selector);
+                profiles.forEach(function (profile) {
+                    if (profile.userID == $scope.projectUserID) {
+                        $scope.fullName = profile.firstName + ' ' + profile.lastName;
+                        try {
+                            if (profile.email) {
+                                $scope.email = profile.email;
+                            } else {
+                                $scope.email = 'none';
+                            }
+                        } catch (err) {
+                            $scope.email = 'none';
+                        }
+                    }
+                })
+                console.info('email details', $scope.email);
+                this.project.email = $scope.email;
+                this.project.fullName = $scope.fullName;
+
+                var status = Projects.insert(this.project);
                 console.info('status', status);
-
-                var selector = { postID: $stateParams.topicId };
-                var comments = Comments.find(selector);
-                var totalPosts = comments.count();
-
-                Meteor.call('upsertPost', this.comment.postID, this.comment.date, this.comment.name, this.comment.profilePhoto, totalPosts, function (err, detail) {
+                var projectCode = status.substring(0, 5);
+                console.info('projectCode', projectCode);
+                Meteor.call('upsertProjectCode', status, projectCode, function (err, detail) {
                     if (err) {
                         console.info('err', err);
                     } else {
                         console.info('success', detail);
                     }
                 });
-
-                var selector = { postID: $stateParams.topicId }
-                var unreadposts = Unreadposts.find(selector);
-
-                if (unreadposts) {
-                    unreadposts.forEach(function (unreadpost) {
-                        var unread = true;
-                        Meteor.call('upsertUnread', unreadpost._id, unread, function (err, detail) {
-                            if (err) {
-                                console.info('err', err);
-                            } else {
-                                console.info('success', detail);
-                            }
-                        });
-                    });
-                }
-
                 this.required = false;
-                this.comment = {};
-                //angular.element("body").removeClass("modal-open");
-                $('#modal-responsive').modal('hide');
-                //var removeMe = angular.element(document.getElementsByClassName("modal-backdrop"));
-                //removeMe.remove();
+                this.project = {};
+                $scope.email = '';
+                $scope.fullName = '';
+                $scope.projectUserID = '';
+                angular.element("body").removeClass("modal-open");
+                $('#modal-project').modal('hide');
+                $state.go('projectdetails', { projectId: status }, { reload: 'projectdetails' });
+                var removeMe = angular.element(document.getElementsByClassName("modal-backdrop"));
+                removeMe.remove();
                 //this.reset();
             } else {
                 this.required = true;
             }
-        }
-
-        this.submitEdit = function () {
-            console.info('edit post', this.forumposts);
-            if (this.forumposts.details && this.forumposts.subject) {
-                Meteor.call('updatePost', this.forumposts._id, this.forumposts.details, this.forumposts.subject, function (err, detail) {
-                    if (err) {
-                        console.info('err', err);
-                    } else {
-                        console.info('success', detail);
-                    }
-                });
-                this.required = false;
-                $('#modal-edit').modal('hide');
-            } else {
-                this.required = true;
-            }
-        }
-
-        this.deleteNow = function () {
-            var status = Posts.remove($stateParams.topicId);
-            console.info('remove status', status);
-            $('#modal-delete').modal('hide');
-            angular.element("body").removeClass("modal-open");
-            var removeMe = angular.element(document.getElementsByClassName("modal-backdrop"));
-            removeMe.remove();
-            $state.go('forums', {}, { reload: 'forums' });
-        }
-
-        this.editComment = function () {
-            console.info('edit post', this.myComment);
-            if (this.myComment.reply) {
-                Meteor.call('updateComment', this.myComment._id, this.myComment.reply, function (err, detail) {
-                    if (err) {
-                        console.info('err', err);
-                    } else {
-                        console.info('success', detail);
-                    }
-                });
-                this.required = false;
-                $('#modal-editComment').modal('hide');
-            } else {
-                this.required = true;
-            }
-        }
-
-        this.editMyComment = function (comment) {
-            this.myComment = comment;
-            console.info('myComment', comment);
-        }
-
-        this.deleteMyComment = function (comment) {
-            this.myComment = comment;
-            console.info('myComment', comment);
-        }
-
-        this.deleteCommentNow = function () {
-            console.info('comment for delete', this.myComment);
-            var status = Comments.remove(this.myComment._id);
-            console.info('remove status', status);
-
-            var selector = { postID: $stateParams.topicId };
-            var modifier = {
-                sort: this.sort
-            };
-            var comments = Comments.find(selector, modifier);
-            var totalPosts = comments.count();
-
-            console.info('totalPosts', totalPosts);
-
-            if (totalPosts > 0) {
-                comments.forEach(function (comment) {
-                    $scope.latestComment = comment;
-                });
-                console.info('latestComment', $scope.latestComment);
-                Meteor.call('upsertPost', $stateParams.topicId, $scope.latestComment.date, $scope.latestComment.name, $scope.latestComment.profilePhoto, totalPosts, function (err, detail) {
-                    if (err) {
-                        console.info('err', err);
-                    } else {
-                        console.info('success', detail);
-                    }
-                });
-            } else {
-                var post = Posts.findOne({ _id: $stateParams.topicId });
-                Meteor.call('upsertPost', $stateParams.topicId, post.datePosted, post.name, post.profilePhoto, totalPosts, function (err, detail) {
-                    if (err) {
-                        console.info('err', err);
-                    } else {
-                        console.info('success', detail);
-                    }
-                });
-            }
-
-            this.myComment = {};
-            $scope.latestComment = {};
-
-            $('#modal-deleteComment').modal('hide');
         }
 
         this.dismissNotif = function () {
@@ -456,7 +352,7 @@ class Topic {
 
 }
 
-const name = 'topic';
+const name = 'mypostings';
 
 //Login.$inject = ['$scope', '$reactive', '$state'];
 
@@ -468,15 +364,15 @@ export default angular.module(name, [
 ]).component(name, {
     template,
     controllerAs: name,
-    controller: ['$scope', '$reactive', '$stateParams', '$state', Topic]
+    controller: ['$scope', '$reactive', '$state', Mypostings]
 })
     .config(['$stateProvider',
         function ($stateProvider) {
             //'ngInject';
             $stateProvider
-                .state('topic', {
-                    url: '/topic/:topicId',
-                    template: '<topic></topic>',
+                .state('mypostings', {
+                    url: '/mypostings',
+                    template: '<mypostings></mypostings>',
                     resolve: {
                         currentUser($q, $state) {
                             if (!Meteor.userId()) {

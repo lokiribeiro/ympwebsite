@@ -3,3 +3,7 @@ import '../imports/api/users';
 import '../imports/api/posts';
 import '../imports/api/comments';
 import '../imports/api/unreadposts';
+import '../imports/api/projects';
+import '../imports/api/projectjobs';
+import '../imports/api/profiles';
+import '../imports/api/quotes';

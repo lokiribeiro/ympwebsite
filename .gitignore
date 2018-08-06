@@ -1,7 +1,8 @@
 node_modules
-
 .desktop-installer
-
 version.desktop
-
-.vscode
+settings.json
+.desktop
+meteor.log
+.meteor/desktop-build
+.meteor/local

@@ -242,6 +242,9 @@ class Forums {
     this.gotoForums = function () {
       $state.go('forums', {}, { reload: 'forums' });
     }
+    this.gotoQuotes = function () {
+      $state.go('quotes', {}, { reload: 'quotes' });
+    }
     this.logout = function () {
       /*window.loading_screen = pleaseWait({
         logo: "../assets/global/images/logo/logo-white2.png",
