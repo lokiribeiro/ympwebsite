@@ -1,8 +1,0 @@
-{
-  "galaxy.meteor.com": {
-     "env": {
-       "MONGO_URL": "mongodb://lokigrey3:lokigrey3@ds249428.mlab.com:49428/ymp"
-     }
-   }
-}
-
