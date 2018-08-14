@@ -275,6 +275,9 @@ class Topic {
         this.gotoQuotes = function () {
             $state.go('quotes', {}, { reload: 'quotes' });
         }
+        this.gotoContractors = function () {
+            $state.go('contractors', {}, { reload: 'contractors' });
+          }
         this.logout = function () {
             /*window.loading_screen = pleaseWait({
               logo: "../assets/global/images/logo/logo-white2.png",

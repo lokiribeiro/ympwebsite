@@ -239,6 +239,9 @@ class Quotes {
         this.gotoMyPosts = function () {
             $state.go('mypostings', {}, { reload: 'mypostings' });
         }
+        this.gotoContractors = function () {
+            $state.go('contractors', {}, { reload: 'contractors' });
+          }
         this.logout = function () {
             /*window.loading_screen = pleaseWait({
               logo: "../assets/global/images/logo/logo-white2.png",

@@ -18,6 +18,7 @@ import Projectpage from '../projectpage/projectpage';
 import Projectdetails from '../projectdetails/projectdetails';
 import Quotepage from '../quotepage/quotepage';
 import Mypostings from '../mypostings/mypostings';
+import Contractors from '../contractors/contractors';
  
 class Socially {}
  
@@ -36,6 +37,7 @@ export default angular.module(name, [
   Projectdetails.name,
   Quotepage.name,
   Mypostings.name,
+  Contractors.name,
   'accounts.ui',
   ngFileUpload
 ]).component(name, {

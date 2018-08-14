@@ -1,0 +1,288 @@
+<div class="header">
+    <div class="container">
+        <div class="header-inner header-md-height title-bar">
+            <a href="#" class="btn-link toggle-sidebar hidden-lg-up pg pg-menu" data-toggle="horizontal-menu">
+            </a>
+            <div class="brand inline align-self-end">
+                <img src="../assets/img/logo-white.png" alt="logo" data-src="../assets/img/logo-white.png" data-src-retina="../assets/img/logo-white.png"
+                    width="17" height="20">
+            </div>
+            <h2 class="page-title align-self-end">
+                Contractors
+            </h2>
+            <div class="d-flex align-items-center">
+                <!-- START User Info-->
+                <div class="pull-left p-r-10 fs-14 font-heading hidden-md-down">
+                    <span class="semi-bold">{{contractors.currentUser.username}}</span>
+                </div>
+                <div class="dropdown pull-right sm-m-r-5">
+                    <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="thumbnail-wrapper d32 circular inline">
+                            <img src="{{contractors.currentUser.profilePhoto}}" alt="{{contractors.currentUser.profilePhoto}}" width="32" height="32">
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
+                        <!--<a href="#" class="dropdown-item">
+                                            <i class="pg-settings_small"></i> Settings</a>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="pg-outdent"></i> Feedback</a>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="pg-signals"></i> Help</a>-->
+                        <a href="#" ng-click="contractors.logout()" class="clearfix bg-master-lighter dropdown-item">
+                            <span class="pull-left">Logout</span>
+                            <span class="pull-right">
+                                <i class="pg-power"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <!-- END User Info-->
+            </div>
+        </div>
+        <div class="menu-bar header-sm-height" data-pages-init='horizontal-menu' data-hide-extra-li="4">
+            <a href="#" class="btn-link toggle-sidebar hidden-lg-up pg pg-close" data-toggle="horizontal-menu">
+            </a>
+            <ul>
+                <li>
+                    <a href="" ng-click="contractors.gotoForums()">Forums</a>
+                </li>
+                <li>
+                    <a href="" ng-click="contractors.gotoQuotes()">
+                        <span class="title">Quote</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" style="color: #0091fe !important;" ng-click="contractors.gotoContractors()">
+                        <span class="title">Contractors</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="social.html">
+                        <span class="title">MLC 2006</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="social.html">
+                        <span class="title">ISM</span>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="search-link d-flex justify-content-between align-items-center hidden-lg-up" data-toggle="search">Tap here to search
+                <i class="pg-search float-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="page-container ">
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper ">
+        <!-- START PAGE CONTENT -->
+        <div class="content sm-gutter">
+            <div class="modal fade stick-up" id="modal-countries" tabindex="-1" role="dialog" aria-labelledby="addNewAppModal" aria-hidden="true">
+                <div class="modal-dialog" style="max-width: 800px !important;">
+                    <div class="modal-content">
+                        <div class="modal-header clearfix ">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                <i class="pg-close fs-14"></i>
+                            </button>
+                            <h4 class="p-b-5">
+                                Select location for
+                                <span class="semi-bold"> {{subCategory}}</span>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" ng-if="projectpage.required">
+                                <div class="col-sm-12 alert alert-danger" role="alert">
+                                    <p>
+                                        <button class="close" data-dismiss="alert" ng-click="projectpage.dismissNotif()"></button>
+                                        Please select a country
+                                    </p>
+                                </div>
+                            </div>
+                            <form role="form">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Country</label>
+                                            <select class="full-width" data-init-plugin="select2">
+                                                <option ng-repeat="country in contractors.countryLists" value="{{country.Name}}">{{country.Name + ' (' + country.Code + ')'}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary  btn-cons" ng-click="">Select Harbor</button>
+                            <button type="button" class="btn btn-cons" data-dismiss="modal" ng-click="">Cancel</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- START JUMBOTRON -->
+            <!--<div data-pages="parallax">
+                                <div class=" container no-padding    container-fixed-lg">
+                                    <div class="inner">
+                                      
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="#">Home</a>
+                                            </li>
+                                            <li class="breadcrumb-item active">Dashboard</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>-->
+            <!-- END JUMBOTRON -->
+            <!-- START CONTAINER FLUID -->
+            <div class=" container    container-fixed-lg">
+                <div class="" style="margin: 20px !important;">
+                    <!-- START card -->
+                    <div class="card card-block social-card full-width" style="padding-bottom: 15px !important;" ng-if="contractors.mainCategory">
+                        <h3 style="margin-bottom: 0 !important;">Categories</h3>
+                        <!--<h6 style="margin-bottom: 20 !important;" class="semi-bold">posted by {{contractors.project.ownerName + ', ' + contractors.project.boatName}}</h6>-->
+                        <div class="row col-md-12">
+                            <h6>
+                                <a href="" class="categories" ng-click="contractors.gotoCaptainSub()">Captain</a>
+                            </h6>
+                        </div>
+                        <div class="row col-md-12">
+                            <h6>
+                                <a href="" class="categories" ng-click="contractors.gotoMatesSub()">Mates</a>
+                            </h6>
+                        </div>
+                        <div class="row col-md-12">
+                            <h6>
+                                <a href="" class="categories" ng-click="contractors.gotoEngineerSub()">Engineer</a>
+                            </h6>
+                        </div>
+                        <div class="row col-md-12">
+                            <h6>
+                                <a href="" class="categories" ng-click="contractors.gotoStewardessesSub()">Stewardesses</a>
+                            </h6>
+                        </div>
+                        <div class="row col-md-12">
+                            <h6>
+                                <a href="" class="categories" ng-click="contractors.gotoChefSub()">Chef</a>
+                            </h6>
+                        </div>
+                    </div>
+                    <!-- START card -->
+                    <div class="card card-block social-card full-width" style="padding-bottom: 15px !important;" ng-if="contractors.captainSub">
+                        <h3 style="margin-bottom: 0 !important;">
+                            <a href="" class="categories" ng-click="contractors.gotoMainCategory()">Categories</a> > Captain</h3>
+                        <!--<h6 style="margin-bottom: 20 !important;" class="semi-bold">posted by {{contractors.project.ownerName + ', ' + contractors.project.boatName}}</h6>-->
+                        <div class="row col-md-12" ng-repeat="category in contractors.captainCategories">
+                            <h6>
+                                <a href="" class="categories" data-toggle="modal" data-target="#modal-countries" ng-click="contractors.selectSubCategory(category.name)">{{category.name}}</a>
+                            </h6>
+                        </div>
+                        <div class="pull-right" style="margin-bottom: 10px !important;">
+                            <button class="pull-right btn btn-primary btn-cons" ng-click="contractors.gotoMainCategory()">
+                                <i class="fa fa-arrow-left"></i> Go Back</button>
+                        </div>
+                    </div>
+                    <!-- END card -->
+                    <!-- START card -->
+                    <div class="card card-block social-card full-width" style="padding-bottom: 15px !important;" ng-if="contractors.mateSub">
+                        <h3 style="margin-bottom: 0 !important;">
+                            <a href="" class="categories" ng-click="contractors.gotoMainCategory()">Categories</a> > Mates</h3>
+                        <!--<h6 style="margin-bottom: 20 !important;" class="semi-bold">posted by {{contractors.project.ownerName + ', ' + contractors.project.boatName}}</h6>-->
+                        <div class="row col-md-12" ng-repeat="category in contractors.mateCategories">
+                            <h6>
+                                <a href="" class="categories" data-toggle="modal" data-target="#modal-countries" ng-click="contractors.selectSubCategory(category.name)">{{category.name}}</a>
+                            </h6>
+                        </div>
+                        <div class="pull-right" style="margin-bottom: 10px !important;">
+                            <button class="pull-right btn btn-primary btn-cons" ng-click="contractors.gotoMainCategory()">
+                                <i class="fa fa-arrow-left"></i> Go Back</button>
+                        </div>
+                    </div>
+                    <!-- END card -->
+                    <!-- START card -->
+                    <div class="card card-block social-card full-width" style="padding-bottom: 15px !important;" ng-if="contractors.engineerSub">
+                        <h3 style="margin-bottom: 0 !important;">
+                            <a href="" class="categories" ng-click="contractors.gotoMainCategory()">Categories</a> > Engineer</h3>
+                        <!--<h6 style="margin-bottom: 20 !important;" class="semi-bold">posted by {{contractors.project.ownerName + ', ' + contractors.project.boatName}}</h6>-->
+                        <div class="row col-md-12" ng-repeat="category in contractors.engineerCategories">
+                            <h6>
+                                <a href="" class="categories" data-toggle="modal" data-target="#modal-countries" ng-click="contractors.selectSubCategory(category.name)">{{category.name}}</a>
+                            </h6>
+                        </div>
+                        <div class="pull-right" style="margin-bottom: 10px !important;">
+                            <button class="pull-right btn btn-primary btn-cons" ng-click="contractors.gotoMainCategory()">
+                                <i class="fa fa-arrow-left"></i> Go Back</button>
+                        </div>
+                    </div>
+                    <!-- END card -->
+                    <!-- START card -->
+                    <div class="card card-block social-card full-width" style="padding-bottom: 15px !important;" ng-if="contractors.stewardessesSub">
+                        <h3 style="margin-bottom: 0 !important;">
+                            <a href="" class="categories" ng-click="contractors.gotoMainCategory()">Categories</a> > Stewardesses</h3>
+                        <!--<h6 style="margin-bottom: 20 !important;" class="semi-bold">posted by {{contractors.project.ownerName + ', ' + contractors.project.boatName}}</h6>-->
+                        <div class="row col-md-12" ng-repeat="category in contractors.stewardessesCategories">
+                            <h6>
+                                <a href="" class="categories" data-toggle="modal" data-target="#modal-countries" ng-click="contractors.selectSubCategory(category.name)">{{category.name}}</a>
+                            </h6>
+                        </div>
+                        <div class="pull-right" style="margin-bottom: 10px !important;">
+                            <button class="pull-right btn btn-primary btn-cons" ng-click="contractors.gotoMainCategory()">
+                                <i class="fa fa-arrow-left"></i> Go Back</button>
+                        </div>
+                    </div>
+                    <!-- END card -->
+                    <!-- START card -->
+                    <div class="card card-block social-card full-width" style="padding-bottom: 15px !important;" ng-if="contractors.chefSub">
+                        <h3 style="margin-bottom: 0 !important;">
+                            <a href="" class="categories" ng-click="contractors.gotoMainCategory()">Categories</a> > Chef</h3>
+                        <!--<h6 style="margin-bottom: 20 !important;" class="semi-bold">posted by {{contractors.project.ownerName + ', ' + contractors.project.boatName}}</h6>-->
+                        <div class="row col-md-12" ng-repeat="category in contractors.chefCategories">
+                            <h6>
+                                <a href="" class="categories" data-toggle="modal" data-target="#modal-countries" ng-click="contractors.selectSubCategory(category.name)">{{category.name}}</a>
+                            </h6>
+                        </div>
+                        <div class="pull-right" style="margin-bottom: 10px !important;">
+                            <button class="pull-right btn btn-primary btn-cons" ng-click="contractors.gotoMainCategory()">
+                                <i class="fa fa-arrow-left"></i> Go Back</button>
+                        </div>
+                    </div>
+                    <!-- END card -->
+
+                </div>
+                <!-- END card -->
+            </div>
+            <!-- START card -->
+            <div class="card card-transparent">
+
+            </div>
+            <!-- END card -->
+        </div>
+        <!-- END CONTAINER FLUID -->
+    </div>
+    <!-- END PAGE CONTENT -->
+    <!-- START COPYRIGHT -->
+    <!-- START CONTAINER FLUID -->
+    <!-- START CONTAINER FLUID -->
+    <div class=" container   container-fixed-lg footer">
+        <div class="copyright sm-text-center">
+            <p class="small no-margin pull-left sm-pull-reset">
+                <span class="hint-text">Copyright &copy; 2018 </span>
+                <span class="font-montserrat">Powered by TYS Ltd.</span>
+                <span class="hint-text">All rights reserved. </span>
+            </p>
+            <p class="small no-margin pull-right sm-pull-reset">
+                <span class="sm-block">
+                    <a href="#" class="m-l-10 m-r-10">Terms of use</a>
+                    <span class="muted">|</span>
+                    <a href="#" class="m-l-10">Privacy Policy</a>
+                </span>
+            </p>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- END COPYRIGHT -->
+</div>
+<!-- END PAGE CONTENT WRAPPER -->
+</div>

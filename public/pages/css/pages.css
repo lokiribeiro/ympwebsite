@@ -2820,6 +2820,30 @@ a:active {
 a[ng-click] {
   cursor: pointer;
 }
+
+a.categories {
+  text-shadow: none !important;
+  color: #555;
+  transition: color 0.1s linear 0s, background-color 0.1s linear 0s, opacity 0.2s linear 0s !important;
+}
+a.categories:focus,
+a.categories:hover,
+a.categories:active {
+  /*color: #353940;*/
+  color: #0091fe;
+}
+a.categories,
+a.categories:focus,
+a.categories:hover,
+a.categories:active {
+  outline: 0 !important;
+  text-decoration: none;
+}
+a.categories[ng-click] {
+  cursor: pointer;
+}
+
+
 br {
   line-height: normal;
   clear: both;
